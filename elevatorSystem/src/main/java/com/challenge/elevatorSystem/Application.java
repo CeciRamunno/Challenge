@@ -29,10 +29,9 @@ public class Application {
 		ingresoViajes(ascensor);
 		
 		// Armado "colas" de viajes.
-		//List<Viaje> viajesTomados = new ArrayList<Viaje>();
-				
-		int maxPisoSubida = 0; // primerViaje.getPisoHasta();
-		int minPisoBajada = 0; //primerViaje.getPisoDesde();
+						
+		int maxPisoSubida = ascensor.getPrimerViaje().getPisoHasta();
+		int minPisoBajada = ascensor.getPrimerViaje().getPisoDesde();
 		
 		// Llamado elevator
 		viajesARealizar(ascensor, maxPisoSubida, minPisoBajada);
@@ -200,7 +199,7 @@ public class Application {
 		Map<Integer, List<Viaje>> aux = new HashMap<Integer, List<Viaje>>();
 		llamados.add(viaje);
 		
-		if(!ascensor.getColaLlamados().containsKey(viaje.getPisoDesde())) //error
+		if(!ascensor.getColaLlamados().containsKey(viaje.getPisoDesde())) //error null except
 		{
 			aux.put(viaje.getPisoDesde(), llamados);
 			ascensor.setColaLlamados(aux);			
@@ -341,6 +340,3 @@ public class Application {
 //	sPrimerViaje = "es primer viaje";
 //	return primerViaje;
 //}
-
-//private static void registroViaje(Map<Integer, List<Viaje>> llamados, Viaje viaje, Ascensor ascensor)
-//if(llamados.containsKey(viaje.getPisoDesde()))
