@@ -22,7 +22,7 @@ public class Application {
 		
 		System.out.println("\nHola!");
 		System.out.println("Seleccione uno de los dos posibles ascensores: Publico / Carga");
-		System.out.println("Marque de 0 a 50 para seleccionar un piso o presione 'Z' para el zótano");
+		System.out.println("Marque de 0 a 50 para seleccionar un piso o presione 'Z' para el zótano\n");
 		
 		Ascensor ascensor = new Ascensor();
 						
@@ -45,9 +45,8 @@ public class Application {
 
 	private static String seleccionAscensor()
 	{
-		System.out.println("Seleccione tipo ascensor que desea tomar: \n");
-		System.out.println("1 - al público\n2 - de carga:\n");
-		System.out.println(" \n");
+		System.out.println("Tipo ascensor que desea tomar: \n1 - al público\n2 - de carga:\n");
+		System.out.println("Ingrese valor: \n");
 		Scanner inputAscensor = new Scanner(System.in);
 		
 		if(inputAscensor.nextInt() == 1)
@@ -59,7 +58,6 @@ public class Application {
 			System.out.println("Tipo de ascensor incorrecto.");
 			return "error";	
 		}
-		
 	}
 
 	private static void viajesARealizar(Ascensor ascensor, int maxPisoSubida, int minPisoBajada)
@@ -135,6 +133,7 @@ public class Application {
 		String sPrimerViaje = "es primer viaje";
 		
 		List<Viaje> llamados = new ArrayList<>();
+		Map<Integer, List<Viaje>> aux = new HashMap<Integer, List<Viaje>>();
 		while(solicitaViaje.toLowerCase().equals("si"))
 		{
 			// ASCENSOR
@@ -159,11 +158,10 @@ public class Application {
 			if(sPrimerViaje.equals("es primer viaje"))
 			{
 				Viaje primerViaje = new Viaje(pisoDesde, pisoHasta);
-				ascensor.setPrimerViaje(primerViaje);
+				ascensor.setPrimerViaje(primerViaje);	
 				sPrimerViaje = "ok";
 			}
 			
-			llamados = ascensor.getColaLlamados().get(viaje.getPisoDesde());
 			registroViaje(llamados, viaje, ascensor);
 
 			solicitaViaje = askNuevoViaje();
@@ -197,23 +195,37 @@ public class Application {
 		return true;
 	}
 
-	private static void registroViaje(List<Viaje> llamados, Viaje viaje, Ascensor ascensor) //MAL
+	private static void registroViaje(List<Viaje> llamados, Viaje viaje, Ascensor ascensor)
 	{
-	
-		if(ascensor.getColaLlamados().containsKey(viaje.getPisoDesde()))
+		Map<Integer, List<Viaje>> aux = new HashMap<Integer, List<Viaje>>();
+		llamados.add(viaje);
+		
+		if(!ascensor.getColaLlamados().containsKey(viaje.getPisoDesde())) //error
 		{
-			llamados.add(viaje); // lo toma como bool.
-			Map<Integer, List<Viaje>> auxDicc = new HashMap<Integer, List<Viaje>>();
-			ascensor.setColaLlamados(auxDicc);
+			aux.put(viaje.getPisoDesde(), llamados);
+			ascensor.setColaLlamados(aux);			
 		}
 		else
 		{
-			List<Viaje> viajes = new ArrayList<Viaje>();
-			viajes.add(viaje);
-			llamados.add(viaje);
-			Map<Integer, List<Viaje>> auxDicc = new HashMap<Integer, List<Viaje>>();
-			ascensor.setColaLlamados(auxDicc);
+			aux.putIfAbsent(viaje.getPisoDesde(), llamados);
+			ascensor.setColaLlamados(aux);
 		}
+
+	
+//		if(ascensor.getColaLlamados().containsKey(viaje.getPisoDesde()))
+//		{
+//			llamados.add(viaje);
+//			Map<Integer, List<Viaje>> auxDicc = new HashMap<Integer, List<Viaje>>();
+//			ascensor.setColaLlamados(auxDicc);
+//		}
+//		else
+//		{
+//			List<Viaje> viajes = new ArrayList<Viaje>();
+//			viajes.add(viaje);
+//			llamados.add(viaje);
+//			Map<Integer, List<Viaje>> auxDicc = new HashMap<Integer, List<Viaje>>();
+//			ascensor.setColaLlamados(auxDicc);
+//		}
 	}
 
 	private static Integer solicitudPiso(String pisoTxt)
