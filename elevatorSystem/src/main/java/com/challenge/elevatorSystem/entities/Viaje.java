@@ -4,31 +4,39 @@ import java.util.Objects;
 
 public class Viaje
 {
-	private Integer PisoDesde;
-	private Integer PisoHasta;
+	private int PisoDesde;
+	private int PisoHasta;
 	private boolean DireccionArriba; //true si sube, false si baja
 	// private int cantPersonas;
 
-	public Viaje(Integer pisoDesde, Integer pisoHasta)
+	public Viaje(int pisoDesde, int pisoHasta)
 	{
 		this.PisoDesde = pisoDesde;
 		this.PisoHasta = pisoHasta;
 		this.DireccionArriba = pisoHasta> pisoDesde;
 	}
 
-	public Integer getPisoDesde() {
+	public boolean validacionViaje(int pisoDesde, int pisoHasta)
+	{
+		if(pisoDesde == pisoHasta)
+			return false;
+		
+		return true;
+	}
+	
+	public int getPisoDesde() {
 		return PisoDesde;
 	}
 
-	public void setPisoDesde(Integer pisoDesde) {
+	public void setPisoDesde(int pisoDesde) {
 		PisoDesde = pisoDesde;
 	}
 
-	public Integer getPisoHasta() {
+	public int getPisoHasta() {
 		return PisoHasta;
 	}
 
-	public void setPisoHasta(Integer pisoHasta) {
+	public void setPisoHasta(int pisoHasta) {
 		PisoHasta = pisoHasta;
 	}
 
